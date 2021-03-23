@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'parler',
     'rosetta',
     'django_translations.apps.translation',
+
+    # 'silk',
 ]
 
 MIDDLEWARE = [
@@ -58,8 +60,10 @@ MIDDLEWARE = [
     'debug_toolbar_force.middleware.ForceDebugToolbarMiddleware',
 ]
 
-ROOT_URLCONF = 'django_translations.urls'
+if 'silk' in INSTALLED_APPS:
+    MIDDLEWARE += ['silk.middleware.SilkyMiddleware', ]
 
+ROOT_URLCONF = 'django_translations.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -127,28 +131,35 @@ LANGUAGES = [
 
 LOCALE_PATHS = [
     'locale/',
-    os.path.join(BASE_DIR, 'locale'),
-    os.path.join(PROJECT_DIR, 'locale'),
+    os.path.join(BASE_DIR, '../locale'),
+    os.path.join(PROJECT_DIR, '../locale'),
 ]
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-
-STATIC_URL = '/static/'
 
 # PARLER_DEFAULT_LANGUAGE_CODE = LANGUAGE_CODE
 
 PARLER_LANGUAGES = {
     None: (
         {'code': 'en', },
-        {'code': 'tk', },
         {'code': 'ru', },
+        {'code': 'tk', },
     ),
     'default': {
         'fallback': 'en',  # defaults to PARLER_DEFAULT_LANGUAGE_CODE
-        'hide_untranslated': False,  # the default; let .active_translations() return fallbacks too.
+        'hide_untranslated': True,  # the default; let .active_translations() return fallbacks too.
     }
 }
+
+PARLER_DEFAULT_ACTIVATE = False
+PARLER_SHOW_EXCLUDED_LANGUAGE_TABS = True
+
+
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.1/howto/static-files/
+
+STATIC_URL = '/static/'
+
 
 INTERNAL_IPS = [
     # ...

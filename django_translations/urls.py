@@ -22,12 +22,16 @@ from django_translations import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('django_translations.apps.translation.api.urls')),
+    path('api/', include('django_translations.apps.api.urls')),
 
     path('__debug__/', include(debug_toolbar.urls)),
+
 ]
 
 if 'rosetta' in settings.INSTALLED_APPS:
     urlpatterns += [
         re_path(r'^rosetta/', include('rosetta.urls'))
     ]
+
+if 'silk' in settings.INSTALLED_APPS:
+    urlpatterns += [path('silk/', include('silk.urls', namespace='silk'))]
